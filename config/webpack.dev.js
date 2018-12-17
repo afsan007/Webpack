@@ -1,3 +1,4 @@
+'use strict'
 const path                     = require("path"),
   webpack                      = require("webpack"),
   HTMLWebpackPlugin            = require("html-webpack-plugin"),
@@ -8,9 +9,14 @@ const path                     = require("path"),
   MiniCssExtractPlugin         = require("mini-css-extract-plugin");
 
 module.exports = {
-  mode:"production",
+  mode:"development",
   entry: {
-    main: ["./src/main.js"]
+    main: [
+      "@babel/runtime/regenerator",
+      '@babel/register', //transform the app.js syntax
+      "webpack-hot-middleware/client?reload=true&noInfo=true",
+      "./src/main.js"
+    ]
   },
   output: {
     filename: "[name]-bundle.js",
@@ -104,6 +110,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(), // Enable HMR
     new webpack.NamedModulesPlugin(),
     new CaseSensitivePathsPlugin(),
     new DashboardPlugin(),

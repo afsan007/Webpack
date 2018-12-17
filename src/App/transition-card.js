@@ -1,7 +1,6 @@
 import React from "react";
 import { TweenMax } from "gsap/all";
 import { Transition } from "react-transition-group";
-
 const TransitionCard = props => {
 	const { in: show, remove, card } = props;
 	return(

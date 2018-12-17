@@ -10,7 +10,7 @@
     "dev": "nodemon --watch config --watch src/server src/server/main.js",
     "prod": "node src/server/main.js",
     "debug": "nodemon --inspect --watch config --watch src/server src/server/main.js",
-    "dashboard": "webpack-dashboard -- node src/server/main.js"
+    "dashboard": "webpack-dashboard --node src/server/main.js"
   },
   "keywords": [],
   "author": "",
