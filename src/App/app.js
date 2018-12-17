@@ -6,7 +6,6 @@ import cards from "./data.json";
 import {AppContainer} from 'react-hot-loader'
 
 class App extends Component {
-
   render() {
     return (
       <div>
