@@ -1,9 +1,12 @@
-const path = require("path")
-const webpack = require("webpack")
-const HTMLWebpackPlugin = require("html-webpack-plugin")
-const DashboardPlugin = require('webpack-dashboard/plugin');
-const OpenBrowserPlugin = require('open-browser-webpack-plugin');
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const path                     = require("path"),
+  webpack                      = require("webpack"),
+  HTMLWebpackPlugin            = require("html-webpack-plugin"),
+  DashboardPlugin              = require('webpack-dashboard/plugin'),
+  OpenBrowserPlugin            = require('open-browser-webpack-plugin'),
+  CaseSensitivePathsPlugin     = require('case-sensitive-paths-webpack-plugin'),
+  OptimizeCSSAssetsPlugin      = require('optimize-css-assets-webpack-plugin'),
+  MiniCssExtractPlugin         = require("mini-css-extract-plugin");
+
 module.exports = {
   mode:"development",
   entry: {
@@ -24,6 +27,17 @@ module.exports = {
           errors: true
       }
   },
+  optimization: {
+    minimizer:[
+      new OptimizeCSSAssetsPlugin({
+        assetNameRegExp: /\.css$/g,
+        cssProcessor: require('cssnano'),
+        cssProcessorPluginOptions: {
+          preset: ['default', { discardComments: { removeAll: true } }],
+        },
+      })
+    ]
+  },
   devtool: "cheap-eval-source-map",
   module: {
     rules: [
@@ -40,7 +54,7 @@ module.exports = {
         test: /\.css$/,
         use: [
           {
-            loader: require.resolve("style-loader")
+            loader: MiniCssExtractPlugin.loader,
           },
           { loader: require.resolve("css-loader") }
         ]
@@ -48,7 +62,9 @@ module.exports = {
       {
         test: /\.sass$/,
         use: [
-          { loader: require.resolve("style-loader")},
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
           { loader: require.resolve("css-loader"),options:{importLoaders:1} },
           { loader: require.resolve("postcss-loader")},
           { loader: require.resolve("sass-loader")  },
@@ -82,16 +98,20 @@ module.exports = {
     ]
   },
   plugins: [
-    // new webpack.HotModuleReplacementPlugin(), // Enable HMR
     new webpack.NamedModulesPlugin(),
+    new CaseSensitivePathsPlugin(),
+    new DashboardPlugin(),
+    new OpenBrowserPlugin({ 
+      url: `http://localhost:${process.env.PORT || 3000}` 
+    }),
     new HTMLWebpackPlugin({
       template: "./src/index.html",
       filename:'index.html',
       minify:true,
       title:"Link's Journal"
     }),
-    new DashboardPlugin(),
-    new OpenBrowserPlugin({ url: `http://localhost:${process.env.PORT || 3000}` }),
-    new CaseSensitivePathsPlugin()
+    new MiniCssExtractPlugin({
+      filename: "[name]-[contenthash].css",
+    })
   ]
 }

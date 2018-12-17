@@ -4,7 +4,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
 const app = express()
-const config = require('../../config/webpack.dev');
+const config = require('../../config/webpack.prod');
 const compiler = webpack(config);
 
 app.use(webpackDevMiddleware(compiler,config.devServer))
