@@ -1,0 +1,24 @@
+{
+  "presets":[
+    [
+      "@babel/preset-env",
+      {
+        "debug":true,
+        "targets":{
+            "browsers":[
+              "last 1 version",
+              "> 1%",
+              "maintained node versions",
+              "not dead",
+              "IE 10"
+            ]
+        }
+      }
+    ],
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    "@babel/plugin-transform-runtime"
+  ]
+
+}
